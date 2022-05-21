@@ -1,4 +1,4 @@
-package com.dhl.test.shared;
+package cz.tomas.test.shared;
 
 import jakarta.inject.Singleton;
 import org.openqa.selenium.Platform;

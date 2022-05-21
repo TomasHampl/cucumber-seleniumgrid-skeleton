@@ -1,4 +1,4 @@
-package com.dhl.test;
+package cz.tomas.test;
 
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;

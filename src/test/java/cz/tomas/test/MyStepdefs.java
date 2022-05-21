@@ -1,7 +1,7 @@
-package com.dhl.test;
+package cz.tomas.test;
 
-import com.dhl.test.shared.StateHolder;
-import com.dhl.test.shared.WebDriverInit;
+import cz.tomas.test.shared.StateHolder;
+import cz.tomas.test.shared.WebDriverInit;
 import com.google.inject.Inject;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.en.Given;
@@ -9,8 +9,6 @@ import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
