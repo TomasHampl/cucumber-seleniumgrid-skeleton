@@ -29,3 +29,8 @@ Currently, this skeleton project is set to use java 11, however technically ther
     </configuration>
 </plugin>
 ```
+## Future plans
+* using some form of input parameter to allow for customization of selenium grid url 
+* browser tear-down feature (currently the browser window stays opened even after the tests finish)
+* refactor the webdriver initialization 
+* general code quality improvements
