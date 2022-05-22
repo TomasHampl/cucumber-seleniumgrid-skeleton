@@ -1,5 +1,6 @@
 package cz.tomas.test.shared;
 
+import com.google.inject.Inject;
 import jakarta.inject.Singleton;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
@@ -15,14 +16,20 @@ public class WebDriverInit {
 
     private static final String LOCAL_GRID = "http://172.17.0.1:4444";
 
+    @Inject
+    private GridHelper gridHelper;
+
     public WebDriver getDriver(){
-        try {
-            URL gridUrl = new URL(LOCAL_GRID);
-            return startDriver(gridUrl);
-        } catch (MalformedURLException e) {
-            String errorMessage = MessageFormat.format("Error has occurred when trying to initialize Selenium Grid URL. Underlying exception was: {0}",e.getMessage());
-            System.out.println(errorMessage);
+        if (isGridUp(LOCAL_GRID)) {
+            try {
+                URL gridUrl = new URL(LOCAL_GRID);
+                return startDriver(gridUrl);
+            } catch (MalformedURLException e) {
+                String errorMessage = MessageFormat.format("Error has occurred when trying to initialize Selenium Grid URL. Underlying exception was: {0}",e.getMessage());
+                System.out.println(errorMessage);
+            }
         }
+
         return null;
     }
 
@@ -34,6 +41,14 @@ public class WebDriverInit {
                 .oneOf(chromeOptions)
                 .address(gridUrl)
                 .build();
+    }
+
+    private boolean isGridUp(String gridUrl){
+        String statusGridUrl = gridUrl + "/status";
+        if(null != gridHelper){
+            return gridHelper.getGridStatus(statusGridUrl);
+        }
+        return false;
     }
 
 }

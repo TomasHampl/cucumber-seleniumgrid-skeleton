@@ -40,7 +40,6 @@ public class MyStepdefs {
 
     @Then("page title is {string}")
     public void statusIs(String pageTitle) {
-
         assertTrue(stateHolder.getPageTitle().equalsIgnoreCase(pageTitle));
     }
 
