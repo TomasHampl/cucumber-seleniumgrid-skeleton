@@ -4,6 +4,7 @@ import cz.tomas.test.shared.StateHolder;
 import cz.tomas.test.shared.WebDriverInit;
 import com.google.inject.Inject;
 import io.cucumber.guice.ScenarioScoped;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
@@ -55,5 +56,10 @@ public class MyStepdefs {
                 .request("GET", stateHolder.getUrl())
                 .then()
                 .statusCode(httpStatus);
+    }
+
+    @After
+    public void closeBrowser(){
+        webDriverInit.closeBrowser(driver);
     }
 }
