@@ -1,17 +1,20 @@
 package cz.tomas.test.shared;
 
 import com.google.inject.Inject;
+import cz.tomas.test.dto.Browser;
 import io.cucumber.core.logging.Logger;
 import io.cucumber.core.logging.LoggerFactory;
 import jakarta.inject.Singleton;
-import org.openqa.selenium.Platform;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.function.Supplier;
 
 @Singleton
@@ -61,16 +64,31 @@ public class WebDriverInit {
     }
 
     private WebDriver startDriver(URL gridUrl){
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setCapability("platformName", Platform.LINUX);
-
+        List<Browser> availableBrowsers = gridHelper.getBrowsers(gridUrl + "/status");
         return RemoteWebDriver.builder()
-                .oneOf(chromeOptions)
+                .oneOf((Capabilities) getBrowser(availableBrowsers))
                 .address(gridUrl)
                 .build();
     }
 
+    private Object getBrowser(List<Browser> browserList){
+        if(!browserList.isEmpty()){
+            for (Browser browser : browserList){
+                if ("Chrome".equalsIgnoreCase(browser.getName())) {
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.setPlatformName(browser.getOs());
+                    return chromeOptions;
+                }
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setPlatformName(browser.getOs());
+                return firefoxOptions;
+            }
+        }
+        return null;
+    }
+
     private boolean isGridUp(String gridUrl){
+
         String statusGridUrl = gridUrl + "/status";
         if(null != gridHelper){
             return gridHelper.getGridStatus(statusGridUrl);
