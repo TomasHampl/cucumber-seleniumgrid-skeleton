@@ -29,10 +29,16 @@ public class WebDriverInit {
     @Inject
     private MavenPropertiesReader mavenPropertiesReader;
 
+    /**
+     * Instantiation method that returns a new instance of {@link WebDriver} associated with selenium grid instance or {@code null}
+     * if none is available<br /><br />
+     * @return new WebDriver instance
+     */
     public WebDriver getDriver(){
-        if (isGridUp(getGridUrl())) {
+        String gridBaseUrl = getGridUrl();
+        if (isGridUp(gridBaseUrl)) {
             try {
-                URL gridUrl = new URL(LOCAL_GRID);
+                URL gridUrl = new URL(gridBaseUrl);
                 return startDriver(gridUrl);
             } catch (MalformedURLException e) {
                 String errorMessage = MessageFormat.format("Error has occurred when trying to initialize Selenium Grid URL. Underlying exception was: {0}",e.getMessage());
