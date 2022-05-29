@@ -1,6 +1,7 @@
 package cz.tomas.test;
 
 import cz.tomas.test.shared.StateHolder;
+import cz.tomas.test.shared.WebDriverHelper;
 import cz.tomas.test.shared.WebDriverInit;
 import com.google.inject.Inject;
 import io.cucumber.guice.ScenarioScoped;
@@ -21,13 +22,15 @@ public class MyStepdefs {
 
     private WebDriver driver;
     private final StateHolder stateHolder;
+    private final WebDriverHelper webDriverHelper;
 
     String pageTitle;
 
     @Inject
-    public MyStepdefs(WebDriverInit webDriverInit, StateHolder stateHolder) {
+    public MyStepdefs(WebDriverInit webDriverInit, StateHolder stateHolder, WebDriverHelper webDriverHelper) {
         this.webDriverInit = webDriverInit;
         this.stateHolder = stateHolder;
+        this.webDriverHelper = webDriverHelper;
     }
 
     @Given("url to visit with browser is {string}")
@@ -36,6 +39,7 @@ public class MyStepdefs {
         this.driver.get(urlToVisit);
         String pageTitle = driver.getTitle();
         stateHolder.setPageTitle(pageTitle);
+        stateHolder.setUrl(urlToVisit);
 
     }
 
@@ -57,6 +61,13 @@ public class MyStepdefs {
                 .then()
                 .statusCode(httpStatus);
     }
+
+    @Then("we save a screenshot")
+    public void takeScreenshot(){
+        webDriverHelper.takeScreenshot(this.driver);
+    }
+
+
 
     @After
     public void closeBrowser(){

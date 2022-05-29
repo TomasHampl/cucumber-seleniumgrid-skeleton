@@ -24,6 +24,10 @@ public class MavenPropertiesReader {
 
     private Properties properties;
 
+    /**
+     * Helper method that returns the value of <strong>selenium.grid.url</strong> property defined in pom.xml
+     * @return a {@link String} representing the URL of selenium grid instance configured in pom
+     */
     public String getSeleniumGridUrl(){
         if(null == properties){
             this.loadProperties();
