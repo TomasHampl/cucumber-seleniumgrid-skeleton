@@ -1,13 +1,22 @@
 # cucumber-seleniumgrid-skeleton
-This repository contains skeleton for a working cucumber - selenium grid app
+Working skeleton of cucumber java project with selenium grid and rest-assured.
+## Technologies used
+* cucumber (https://cucumber.io) - as framework implementing BDD principles
+* selenium (https://www.selenium.dev) - to simulate browser interaction
+* rest-assured (https://rest-assured.io) - to send simple http requests and assess the responses
 
+## Pre-requisites
+* maven
+* java (at least 1.8 - see below)
 ## How to use
-Clone this repo and adapt as you see fit...there are few pre-requisites you need to have before running:
-* selenium grid downloaded and running on your machine
-* if your selenium grid uses different browser than Chrome, adjust the WebDriverInit class (this was supposed to be quick & dirty, better implementation made this configurable in pom.xml perhaps)
-* you need to have your selenium grid url (default defined in pom is http://172.17.0.1:4444)
-* if you wish to override the default grid url, simply pass the ```DSelenium.grid.url=xxx``` (where **xxx** is the url you wish to use) or modify the ```pom.xml```
-* screenshots can be taken, they will be stored in 'target' (so if you wish to keep them it's best to implement better location outside of 'temp' folder like 'target')
+* Clone project
+* Run using ```mvn clean test``` -> this will run the test suite using the class ```RunCucumberTest``` which sets the classpath to resolve to ```cz/tomas/test```. If you wish to modify the package names (understandable), don't forget to update this file to point to the 'new' classpath.
+* Project uses a sample feature file ```src/test/resources/cz/tomas/test/simpleUrlTest.feature``` which has two very simple test scenarios
+
+## Dependency Injection
+Project is using https://github.com/google/guice as dependency injection framework, to allow you not to worry about instantiation of helper classes and services. Simply annotate them with ```@Singleton``` and inject using ```@Inject```. If you examine the source code, it should become apparent how to use that.
+
+
 
 ## What it contains
 * sample gherkin feature file
