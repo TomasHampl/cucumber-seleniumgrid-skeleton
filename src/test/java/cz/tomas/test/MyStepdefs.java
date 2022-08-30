@@ -1,21 +1,23 @@
 package cz.tomas.test;
 
-import cz.tomas.test.pages.Home;
+import com.google.inject.Inject;
 import cz.tomas.test.shared.ElementActions;
 import cz.tomas.test.shared.StateHolder;
 import cz.tomas.test.shared.WebDriverHelper;
 import cz.tomas.test.shared.WebDriverInit;
-import com.google.inject.Inject;
 import io.cucumber.guice.ScenarioScoped;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.Duration;
+
+import static io.restassured.RestAssured.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 
@@ -43,7 +45,6 @@ public class MyStepdefs {
     public void iWantToOpenUrlInBrowser(String urlToVisit) {
 
         this.driver = webDriverInit.getDriver();
-        Home homePage = PageFactory.initElements(driver, Home.class);
         this.driver.get(urlToVisit);
         String pageTitle = driver.getTitle();
         stateHolder.setDriver(this.driver);
@@ -54,7 +55,13 @@ public class MyStepdefs {
 
     @Then("page title is {string}")
     public void statusIs(String pageTitle) {
-        assertTrue(stateHolder.getPageTitle().equalsIgnoreCase(pageTitle));
+        boolean titleInStateIsOk = stateHolder.getPageTitle().equalsIgnoreCase(pageTitle);
+        if(titleInStateIsOk){
+            assertTrue(true);
+        } else {
+            boolean titleIsOk = new WebDriverWait(stateHolder.getDriver(),Duration.ofSeconds(10)).until(ExpectedConditions.titleIs(pageTitle));
+            assertTrue(titleIsOk);
+        }
     }
 
     @Given("url to send http get request to is {string}")
@@ -78,10 +85,7 @@ public class MyStepdefs {
 
     @When("we click on element with {string} text")
     public void weClickOnElementWithText(String text) {
-        //String xpathExpression = MessageFormat.format("//a[@href='/{0}']",text.toLowerCase(Locale.ROOT));
-        //String xpathExpr = "//a[@href='" + text.toLowerCase(Locale.ROOT) + "']";
-        String xpathExpr = "//div[contains(concat(' ', @class, ' '), ' display-1 mt-0 mt-md-5 pb-1 ')]";
-        elementActions.click(xpathExpr,stateHolder );
+        elementActions.click(webDriverHelper.findElementByText(driver,text));
     }
 
     @After

@@ -39,7 +39,9 @@ public class WebDriverInit {
         if (isGridUp(gridBaseUrl)) {
             try {
                 URL gridUrl = new URL(gridBaseUrl);
-                return startDriver(gridUrl);
+                WebDriver webDriver = startDriver(gridUrl);
+                webDriver.manage().window().maximize();
+                return webDriver;
             } catch (MalformedURLException e) {
                 String errorMessage = MessageFormat.format("Error has occurred when trying to initialize Selenium Grid URL. Underlying exception was: {0}",e.getMessage());
                 System.out.println(errorMessage);
@@ -83,6 +85,7 @@ public class WebDriverInit {
                 if ("Chrome".equalsIgnoreCase(browser.getName())) {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.setPlatformName(browser.getOs());
+                    chromeOptions.addArguments("start-maximized");
                     return chromeOptions;
                 }
                 FirefoxOptions firefoxOptions = new FirefoxOptions();

@@ -70,6 +70,16 @@ public class WebDriverHelper {
         return null;
     }
 
+    public WebElement findElementByText(WebDriver driver, String text){
+        try {
+            return driver.findElement(By.partialLinkText(text));
+        } catch (NoSuchElementException noSuchElementException){
+            Supplier<String> errorMessage = () -> "Element could not be found by provided text: " + text;
+            logger.error(errorMessage);
+        }
+        return null;
+    }
+
     /**
      * Helper method that attempts to take a screenshot of the provided {@code WebElement}.
      * @param webElement is an instance of the {@link WebElement} that contains the 'screenshot' capability. If all goes well it'll be found
